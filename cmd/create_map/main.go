@@ -34,4 +34,30 @@ func main(){
 		panic(err)
 	}
 	fmt.Printf("%# v\n", pretty.Formatter(outerArrMap))
+
+	innerMap, err := ebpf.NewMap(innerSpec)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%# v\n", pretty.Formatter(innerMap))
+
+	if err := innerMap.Put(uint32(0), uint32(4242)); err != nil {
+		fmt.Println("Can't put inner map:", err)
+	}
+
+	if err := outerArrMap.Put(uint32(0), innerMap); err != nil {
+		fmt.Println("Can't put inner map:", err)
+	}
+
+
+	fmt.Printf("%# v\n", pretty.Formatter(innerMap))
+	if err := outerArrMap.Lookup(uint32(0), &innerMap); err != nil {
+		fmt.Println("Can't lookup 0:", err)
+	}
+	var v uint32
+	if err := innerMap.Lookup(uint32(0), &v); err != nil {
+		fmt.Println("Can't lookup 0:", err)
+	}
+	fmt.Println(v)
+
 }
