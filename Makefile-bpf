@@ -10,7 +10,7 @@ INCLUDEFLAGS = -I$(obj)/usr/include \
 	       -I$(obj)/include \
 
 
-always = src/test.o
+always = src/createmap.o
 # always += src/a.o
 
 HOSTCFLAGS += $(INCLUDEFLAGS) $(PFLAGS)

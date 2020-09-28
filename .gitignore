@@ -186,7 +186,6 @@ dmypy.json
 .envrc
 .vscode/settings.json
 dump.log
-out/srv6.o
 
 .terraform
 terraform.tfstate
@@ -196,3 +195,4 @@ id_rsa
 var.yml
 hook.h
 main
+bin/*
