@@ -3,30 +3,35 @@ package main
 import (
 	"github.com/cilium/ebpf"
 	"fmt"
+	"github.com/kr/pretty"
 )
 
 func main(){
-	inner := &ebpf.MapSpec{
+	innerSpec := &ebpf.MapSpec{
 		Type:       ebpf.Array,
 		KeySize:    4,
 		ValueSize:  4,
 		MaxEntries: 3,
 	}
-	outerArr := &ebpf.MapSpec{
+	outerArrSpec := &ebpf.MapSpec{
 		Type:       ebpf.ArrayOfMaps,
 		KeySize:    4,
 		ValueSize:  4,
 		MaxEntries: 1,
-		InnerMap: inner,
+		InnerMap: innerSpec,
 	}
-	outerHash := &ebpf.MapSpec{
+	outerHashSpec := &ebpf.MapSpec{
 		Type:       ebpf.HashOfMaps,
 		KeySize:    4,
 		ValueSize:  4,
 		MaxEntries: 5,
-		InnerMap: inner,
+		InnerMap: innerSpec,
 	}
-	fmt.Println(outerArr)
-	fmt.Println(outerHash)
-	
+	fmt.Println(outerArrSpec)
+	fmt.Println(outerHashSpec)
+	outerArrMap, err := ebpf.NewMap(outerArrSpec)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%# v\n", pretty.Formatter(outerArrMap))
 }
