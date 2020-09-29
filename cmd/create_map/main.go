@@ -4,10 +4,20 @@ import (
 	"fmt"
 
 	"github.com/cilium/ebpf"
+	"github.com/cilium/ebpf/asm"
 	"github.com/kr/pretty"
 )
 
 func main() {
+	socketFilterSpec := &ebpf.ProgramSpec{
+		Name: "test",
+		Type: ebpf.SocketFilter,
+		Instructions: asm.Instructions{
+			asm.LoadImm(asm.R0, 2, asm.DWord),
+			asm.Return(),
+		},
+		License: "MIT",
+	}
 	innerSpec := &ebpf.MapSpec{
 		Type:       ebpf.Array,
 		KeySize:    4,
@@ -60,4 +70,11 @@ func main() {
 	}
 	fmt.Println(v)
 
+	prog, err := ebpf.NewProgramWithOptions(socketFilterSpec, ebpf.ProgramOptions{
+		LogLevel: 2,
+	})
+	fmt.Printf("%# v\n", pretty.Formatter(prog))
+	if err != nil {
+		panic(err)
+	}
 }
