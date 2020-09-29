@@ -14,7 +14,7 @@ struct inner_map
 struct outer_arr
 {
     __uint(type, BPF_MAP_TYPE_ARRAY_OF_MAPS);
-    __uint(max_entries, 3);
+    __uint(max_entries, 1);
     __uint(key_size, sizeof(int));
     __uint(value_size, sizeof(int));
     __array(values, struct inner_map);

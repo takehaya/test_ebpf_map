@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/cilium/ebpf"
 	"fmt"
+
+	"github.com/cilium/ebpf"
 	"github.com/kr/pretty"
 )
 
-func main(){
+func main() {
 	innerSpec := &ebpf.MapSpec{
 		Type:       ebpf.Array,
 		KeySize:    4,
@@ -18,14 +19,14 @@ func main(){
 		KeySize:    4,
 		ValueSize:  4,
 		MaxEntries: 1,
-		InnerMap: innerSpec,
+		InnerMap:   innerSpec,
 	}
 	outerHashSpec := &ebpf.MapSpec{
 		Type:       ebpf.HashOfMaps,
 		KeySize:    4,
 		ValueSize:  4,
 		MaxEntries: 5,
-		InnerMap: innerSpec,
+		InnerMap:   innerSpec,
 	}
 	fmt.Println(outerArrSpec)
 	fmt.Println(outerHashSpec)
@@ -48,7 +49,6 @@ func main(){
 	if err := outerArrMap.Put(uint32(0), innerMap); err != nil {
 		fmt.Println("Can't put inner map:", err)
 	}
-
 
 	fmt.Printf("%# v\n", pretty.Formatter(innerMap))
 	if err := outerArrMap.Lookup(uint32(0), &innerMap); err != nil {
