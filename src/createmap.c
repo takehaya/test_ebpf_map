@@ -31,3 +31,10 @@ struct outer_hash
 } outer_hash SEC(".maps") = {
     .values = {&inner_map},
 };
+
+SEC("xdp_pass")
+int dummymain()
+{
+    return XDP_PASS;
+}
+char _license[] SEC("license") = "GPL";
