@@ -16,15 +16,12 @@ func LoadElf(filepath string) (*ebpf.Collection, *ebpf.ProgramSpec, error) {
 	}
 
 	// Read ELF
-	fmt.Println("	ebpf.LoadCollectionSpecFromReader(f)	")
-
 	spec, err := ebpf.LoadCollectionSpecFromReader(f)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
 	}
 	fmt.Printf("%# v\n", pretty.Formatter(spec))
 
-	fmt.Println("	coll, err := ebpf.NewCollection(spec)	")
 	coll, err := ebpf.NewCollection(spec)
 	if err != nil {
 		return nil, nil, errors.WithStack(err)
@@ -33,7 +30,7 @@ func LoadElf(filepath string) (*ebpf.Collection, *ebpf.ProgramSpec, error) {
 }
 
 func main() {
-	coll, spec, err := LoadElf("./obj/createmap.o")
+	coll, spec, err := LoadElf("./createmap.o")
 	if err != nil {
 		panic(err)
 	}
